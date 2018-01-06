@@ -21,6 +21,7 @@ library
                      , directory
                      , containers
                      , Unique
+                     , vector-space
   other-extensions:    ForeignFunctionInterface
   default-language:    Haskell2010
   include-dirs:        Cpp
