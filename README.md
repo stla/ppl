@@ -19,11 +19,11 @@ Define a set of linear constraints:
 import Data.Ratio
 constraints =
   [(linearCombination vars [(1,x), (1,y), (1,z)]) .=. constant 0
-   (linearCombination vars [(1,z)])               .<. constant 10
-   (linearCombination vars [(1,x), (-1,y)])       .>. constant (-10)
-   (linearCombination vars [(1,x), (1,y)])        .<. constant (5%2)
-   (linearCombination vars [(1,x), (-1,y)])       .<. constant 0
-   (linearCombination vars [(1,x), (-1,y)])       .>. constant (-1)]
+  ,(linearCombination vars [(1,z)])               .<. constant 10
+  ,(linearCombination vars [(1,x), (-1,y)])       .>. constant (-10)
+  ,(linearCombination vars [(1,x), (1,y)])        .<. constant (5%2)
+  ,(linearCombination vars [(1,x), (-1,y)])       .<. constant 0
+  ,(linearCombination vars [(1,x), (-1,y)])       .>. constant (-1)]
 ```
 
 Get the vertices:

@@ -56,17 +56,18 @@ simplifyTerms :: [(Rational,Var)] -> IntMap Rational
 simplifyTerms terms = M.fromListWith (+) (map swap terms)
 
 linearCombination :: [Var] -> [(Rational,Var)] -> LinearCombination
-linearCombination vars terms =
-  case allUnique vars of
+linearCombination vars0 terms =
+  case allUnique vars0 of
     False -> error "duplicated variable"
-    True -> case all (flip elem vars) presentVariables of
+    True  -> case all (flip elem vars0) presentVariables of
       False -> error "unknown variable in the terms"
-      True -> LinearCombination
+      True  -> LinearCombination
                (M.union simplifiedTerms
                         (M.fromList [(i,0) | i <- [0..length vars]]))
   where
     simplifiedTerms = simplifyTerms terms
-    presentVariables = M.keys simplifiedTerms
+    presentVariables = M.keys (M.delete 0 simplifiedTerms)
+    vars = filter (/= 0) vars0
 
 constant :: Rational -> LinearCombination
 constant x = LinearCombination (M.singleton 0 x)
@@ -171,3 +172,18 @@ constraintsExample = [c1,c2,c3,c4,c5,c6]
     c4 = linearCombination vars [(1,x), (1,y)] .<. constant (5%2)
     c5 = linearCombination vars [(1,x), (-1,y)] .<. constant 0
     c6 = linearCombination vars [(1,x), (-1,y)] .>. constant (-1)
+
+constraintsExample2 :: [Constraint]
+constraintsExample2 =
+  [(linearCombination vars [(1,x)]) .>. constant (-5)
+  ,(linearCombination vars [(1,x)]) .<. constant 4
+  ,(linearCombination vars [(1,y)]) .>. constant (-5)
+  ,(linearCombination vars [(1,y)]) .<. (linearCombination vars [(3,c), (-1,x)])
+  ,(linearCombination vars [(1,z)]) .>. constant (-10)
+  ,(linearCombination vars [(1,z)]) .<. (linearCombination vars [(6,c), (-1,x), (-1,y)])]
+  where
+    c = newVar 0
+    x = newVar 1
+    y = newVar 2
+    z = newVar 3
+    vars = [x,y,z] -- or [c,x,y,z]

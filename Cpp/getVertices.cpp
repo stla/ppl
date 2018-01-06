@@ -13,11 +13,12 @@ char* getVertices(char* constraintsFile){
     cs.ascii_load(ifs);
     C_Polyhedron ph(cs);
     Generator_System gs = ph.generators(); // Use ph.minimized_generators() to minimal set of points for the polytope
-    bool check = true;
-    for(Generator_System::const_iterator it = gs.begin(); it != gs.end(); it++) {
-      const Generator& g = *it;
-      check = check && g.is_point(); // false for unbounded polyhedra
-    }
+    // bool check = true;
+    // for(Generator_System::const_iterator it = gs.begin(); it != gs.end(); it++) {
+    //   const Generator& g = *it;
+    //   check = check && g.is_point(); // false for unbounded polyhedra
+    // }
+    bool check = ph.is_bounded();
     std::string outAsString;
     if(check){
       std::stringstream ss;
