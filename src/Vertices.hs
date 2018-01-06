@@ -168,7 +168,7 @@ getVertices constraints = do
     True -> do
       rawResults <- getVerticesRaw constraints
       case rawResults == "unbounded" of
-        True  -> error "unbounded polyhedron"
+        True  -> error "unbounded polytope"
         False -> return $ rawResultsToVertices rawResults
   where variablesSets = map constraintVariables constraints
 
